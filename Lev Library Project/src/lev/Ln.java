@@ -1096,8 +1096,8 @@ public class Ln {
 
 	int counter = 0;
 	for (int i = 0; i < tmp.length && input != 0; i++) {
-	    tmp[i] = (byte) (input % 256);
-	    input = input / 256;
+	    tmp[i] = (byte) (input & 0xff);
+	    input = input >> 8;
 	    counter++;
 	}
 	if (counter < minLength) {

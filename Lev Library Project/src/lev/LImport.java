@@ -81,6 +81,28 @@ public abstract class LImport {
     final public int extractInt(final int read) {
 	return extractInt(0, read);
     }
+    
+    /**
+     * Reads in the desired bytes and converts them to a int (little endian
+     * assumed). Sign extends if less than 4 bytes were read and the number
+     * read is negative.
+     *
+     * @param read
+     * @return
+     */
+    final public int extractIntSigned(final int read) {
+        int value = extractInt(0, read);
+        if (read < 4) {
+            boolean isNeg = (value & (0x80 << (read-1))) != 0;
+            if (isNeg) {
+                for (int i = read; i < 4; i++) {
+                    int high = 0xFF << i * 8;
+                    value |= high;
+                }
+            }
+        }
+        return value;
+    }
 
     /**
      * Reads in the desired bytes and converts them to an int array.
